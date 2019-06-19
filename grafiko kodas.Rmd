@@ -1,0 +1,33 @@
+---
+title: "Untitled"
+author: "Ugnė Budzevičiūtė"
+date: '2019-06-19'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+if(!require(eurostat)) install.packages("eurostat") ; require(eurostat)
+if(!require(dplyr)) install.packages("dplyt") ; require(dplyr)
+if(!require(ggplot2)) install.packages("ggplot2") ; require(ggplot2)
+
+
+tps00098 <- get_eurostat("tps00098", stringsAsFactors=F)
+
+df <- tps00098 %>% filter(
+  geo %in% c("EE","LT","LV","PL"),
+  time>= "2010-01-01")
+
+
+
+
+ggplot(df, aes(x=time, y=values))+
+  geom_line(aes(col=geo))+
+  scale_x_date(breaks="1 year", date_labels = "%Y")+
+  labs(x="Laikas", y="Išlaidos(% nuo BVP)",
+     title="Išlaidos socialinei apsaugai",
+     subtitle ="Šaltinis): Eurostat(tps00098)")
+```
